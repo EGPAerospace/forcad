@@ -1,0 +1,3 @@
+[submodule "ext/stdlib"]
+	path = ext/stdlib
+	url = https://github.com/fortran-lang/stdlib.git
