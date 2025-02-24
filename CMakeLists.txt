@@ -4,7 +4,7 @@
 # Define the project and the depencies that it has
 ##################################################
 
-CMAKE_MINIMUM_REQUIRED(VERSION 2.8.5)
+CMAKE_MINIMUM_REQUIRED(VERSION 3.0)
 PROJECT(FORCAD Fortran)
 
 enable_language(Fortran CXX)
@@ -59,6 +59,8 @@ ENDIF(FCNAME STREQUAL "pgf90")
 SET(FORCADLIB forcad)
 
 # Define some directories
+#SET(EXTINCLUDE ${CMAKE_SOURCE_DIR}/ext/stdlib/src)
+SET(EXTSTDLIB ${CMAKE_SOURCE_DIR}/ext/stdlib)
 SET(SRC ${CMAKE_SOURCE_DIR}/src)
 SET(LIB ${CMAKE_SOURCE_DIR}/lib)
 SET(BIN ${CMAKE_SOURCE_DIR}/bin)
@@ -66,11 +68,13 @@ SET(BIN ${CMAKE_SOURCE_DIR}/bin)
 #SET(SRC1DPERFORMANCE ${SRC}/1DPerformance)
 #SET(SRCGASPATH ${SRC}/GasPath)
 #SET(SRCSIZING ${SRC}/Sizing)
+#include_directories(${EXTINCLUDE})
 
 # Have the .mod files placed in the lib folder
 SET(CMAKE_Fortran_MODULE_DIRECTORY ${LIB})
 
 # The source for the libraries and have it placed in the lib folder
+ADD_SUBDIRECTORY(${EXTSTDLIB} ${LIB}/ext/stdlib)
 #ADD_SUBDIRECTORY(${SRC1DPERFORMANCE} ${LIB}/1DPerformance)
 #ADD_SUBDIRECTORY(${SRCGASPATH} ${LIB}/GasPath)
 ADD_SUBDIRECTORY(${SRC} ${LIB})
