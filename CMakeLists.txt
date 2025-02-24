@@ -15,7 +15,7 @@ SET(VERSION 0.0.1)
 set(CMAKE_BUILD_TYPE Release) 
 
 # Add our local modules to the module path
-SET(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/Modules/")
+SET(CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake/Modules/")
 
 # Uncomment if it is required that Fortran 90 is supported
 #IF(NOT CMAKE_Fortran_COMPILER_SUPPORTS_F90)
@@ -87,10 +87,10 @@ SET(FORCADLIB forcad)
 
 # Define some directories
 #SET(EXTINCLUDE ${CMAKE_SOURCE_DIR}/ext/stdlib/src)
-SET(EXTSTDLIB ${CMAKE_SOURCE_DIR}/ext/stdlib)
-SET(SRC ${CMAKE_SOURCE_DIR}/src)
-SET(LIB ${CMAKE_SOURCE_DIR}/lib)
-SET(BIN ${CMAKE_SOURCE_DIR}/bin)
+SET(EXTSTDLIB ${PROJECT_SOURCE_DIR}/ext/stdlib)
+SET(SRC ${PROJECT_SOURCE_DIR}/src)
+SET(LIB ${PROJECT_SOURCE_DIR}/lib)
+SET(BIN ${PROJECT_SOURCE_DIR}/bin)
 #SET(SRCRADCOMP ${SRC}/RadComp)
 #SET(SRC1DPERFORMANCE ${SRC}/1DPerformance)
 #SET(SRCGASPATH ${SRC}/GasPath)
@@ -111,5 +111,5 @@ ADD_SUBDIRECTORY(${SRC} ${LIB})
 
 # Add a distclean target to the Makefile
 ADD_CUSTOM_TARGET(distclean 
-    COMMAND ${CMAKE_COMMAND} -P ${CMAKE_SOURCE_DIR}/distclean.cmake
+    COMMAND ${CMAKE_COMMAND} -P ${PROJECT_SOURCE_DIR}/distclean.cmake
 )
