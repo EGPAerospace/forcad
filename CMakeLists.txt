@@ -4,18 +4,18 @@
 # Define the project and the depencies that it has
 ##################################################
 
-CMAKE_MINIMUM_REQUIRED(VERSION 3.0)
+cmake_minimum_required(VERSION 3.14)
 PROJECT(FORCAD Fortran)
 
 enable_language(Fortran CXX)
 
 # Set the FOO version
-SET(VERSION 0.0.1)
+set(VERSION 0.0.1)
 
 set(CMAKE_BUILD_TYPE Release) 
 
 # Add our local modules to the module path
-SET(CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake/Modules/")
+set(CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake/Modules/")
 
 # Uncomment if it is required that Fortran 90 is supported
 #IF(NOT CMAKE_Fortran_COMPILER_SUPPORTS_F90)
@@ -26,6 +26,10 @@ SET(CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake/Modules/")
 # Uncomment the below if you want the user to choose a parallelization library
 #OPTION(USE_MPI "Use the MPI library for parallelization" OFF)
 #OPTION(USE_OPENMP "Use OpenMP for parallelization" OFF)
+
+
+include(FetchContent)
+
 
 # This INCLUDE statement executes code that sets the compile flags for DEBUG,
 # RELEASE, and TESTING.  You should  review this file and make sure the flags 
@@ -47,28 +51,41 @@ IF(FCNAME STREQUAL "pgf90")
 ENDIF(FCNAME STREQUAL "pgf90")
 
 
-#######################
-# Adding git submodules
-#######################
+#######################################################
+# Adding git submodules with FetchContent functionality
+#######################################################
 
-find_package(Git QUIET)
-if(GIT_FOUND AND EXISTS "${PROJECT_SOURCE_DIR}/.git")
+FetchContent_Declare(
+  fortran_stdlib
+  GIT_REPOSITORY https://github.com/fortran-lang/stdlib.git
+  GIT_TAG        v0.7.0
+)
+
+# CMake 3.14+
+FetchContent_MakeAvailable(fortran_stdlib)
+
+
+
+
+
+#find_package(Git QUIET)
+#if(GIT_FOUND AND EXISTS "${PROJECT_SOURCE_DIR}/.git")
 # Update submodules as needed
-    option(GIT_SUBMODULE "Check submodules during build" ON)
-    if(GIT_SUBMODULE)
-        message(STATUS "Submodule update")
-        execute_process(COMMAND ${GIT_EXECUTABLE} submodule update --init --recursive
-                        WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
-                        RESULT_VARIABLE GIT_SUBMOD_RESULT)
-        if(NOT GIT_SUBMOD_RESULT EQUAL "0")
-            message(FATAL_ERROR "git submodule update --init --recursive failed with ${GIT_SUBMOD_RESULT}, please checkout submodules")
-        endif()
-    endif()
-endif()
+#    option(GIT_SUBMODULE "Check submodules during build" ON)
+#    if(GIT_SUBMODULE)
+#        message(STATUS "Submodule update")
+#        execute_process(COMMAND ${GIT_EXECUTABLE} submodule update --init --recursive
+#                        WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+#                        RESULT_VARIABLE GIT_SUBMOD_RESULT)
+#        if(NOT GIT_SUBMOD_RESULT EQUAL "0")
+#            message(FATAL_ERROR "git submodule update --init --recursive failed with ${GIT_SUBMOD_RESULT}, please checkout submodules")
+#        endif()
+#    endif()
+#endif()
 
-if(NOT EXISTS "${PROJECT_SOURCE_DIR}/ext/stdlib/CMakeLists.txt")
-    message(FATAL_ERROR "The stdlib submodule was not downloaded! GIT_SUBMODULE was turned off or failed. Please update submodules and try again.")
-endif()
+#if(NOT EXISTS "${PROJECT_SOURCE_DIR}/ext/stdlib/CMakeLists.txt")
+#    message(FATAL_ERROR "The stdlib submodule was not downloaded! GIT_SUBMODULE was turned off or failed. Please update submodules and try again.")
+#endif()
 
 
 
@@ -87,7 +104,7 @@ SET(FORCADLIB forcad)
 
 # Define some directories
 #SET(EXTINCLUDE ${CMAKE_SOURCE_DIR}/ext/stdlib/src)
-SET(EXTSTDLIB ${PROJECT_SOURCE_DIR}/ext/stdlib)
+#SET(EXTSTDLIB ${PROJECT_SOURCE_DIR}/ext/stdlib)
 SET(SRC ${PROJECT_SOURCE_DIR}/src)
 SET(LIB ${PROJECT_SOURCE_DIR}/lib)
 SET(BIN ${PROJECT_SOURCE_DIR}/bin)
@@ -98,10 +115,10 @@ SET(BIN ${PROJECT_SOURCE_DIR}/bin)
 #include_directories(${EXTINCLUDE})
 
 # Have the .mod files placed in the lib folder
-SET(CMAKE_Fortran_MODULE_DIRECTORY ${LIB})
+#SET(CMAKE_Fortran_MODULE_DIRECTORY ${LIB})
 
 # The source for the libraries and have it placed in the lib folder
-ADD_SUBDIRECTORY(${EXTSTDLIB} ${LIB}/ext/stdlib)
+#ADD_SUBDIRECTORY(${EXTSTDLIB} ${LIB}/ext/stdlib)
 #ADD_SUBDIRECTORY(${SRC1DPERFORMANCE} ${LIB}/1DPerformance)
 #ADD_SUBDIRECTORY(${SRCGASPATH} ${LIB}/GasPath)
 ADD_SUBDIRECTORY(${SRC} ${LIB})
